@@ -12,7 +12,13 @@ print("TOKEN?", os.getenv("TELEGRAM_BOT_TOKEN"))  # для лога
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 
 async def main():
-    bot = Bot(token=TOKEN, parse_mode=ParseMode.HTML)
+    from aiogram.client.default import DefaultBotProperties
+
+bot = Bot(
+    token=TOKEN,
+    default=DefaultBotProperties(parse_mode=ParseMode.HTML)
+)
+
     dp = Dispatcher(storage=MemoryStorage())
     register_handlers(dp)
 
