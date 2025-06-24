@@ -6,6 +6,8 @@ from bot.handlers import register_handlers
 import os
 import uvicorn
 from webapp_server import app as web_app
+import os
+print("TOKEN?", os.getenv("TELEGRAM_BOT_TOKEN"))  # для лога
 
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 
