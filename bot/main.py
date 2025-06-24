@@ -1,24 +1,20 @@
 import asyncio
+import os
 from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
 from aiogram.fsm.storage.memory import MemoryStorage
+from aiogram.client.default import DefaultBotProperties
 from bot.handlers import register_handlers
-import os
-import uvicorn
 from webapp_server import app as web_app
-import os
-print("TOKEN?", os.getenv("TELEGRAM_BOT_TOKEN"))  # для лога
+import uvicorn
 
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 
 async def main():
-    from aiogram.client.default import DefaultBotProperties
-
-bot = Bot(
-    token=TOKEN,
-    default=DefaultBotProperties(parse_mode=ParseMode.HTML)
-)
-
+    bot = Bot(
+        token=TOKEN,
+        default=DefaultBotProperties(parse_mode=ParseMode.HTML)
+    )
     dp = Dispatcher(storage=MemoryStorage())
     register_handlers(dp)
 
