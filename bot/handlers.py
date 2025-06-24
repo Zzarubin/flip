@@ -2,7 +2,7 @@ from aiogram import Dispatcher
 from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.filters import Command
 
-WEBAPP_URL = "https://your-app-name.up.railway.app"  # заменишь на свой URL
+WEBAPP_URL = "flip-production-fbfb.up.railway.app"  # заменишь на свой URL
 
 async def start(message: Message):
     keyboard = InlineKeyboardMarkup(
