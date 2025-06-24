@@ -11,10 +11,10 @@ async def start(message: Message):
         ]
     )
     await message.answer(
-        "👋 Добро пожаловать в Flipzy!
-Нажми кнопку ниже, чтобы открыть мини-приложение.",
+        "👋 Добро пожаловать в Flipzy!\nНажми кнопку ниже, чтобы открыть мини-приложение.",
         reply_markup=keyboard
     )
+
 
 async def webapp_data(message: Message):
     await message.answer(f"📦 Получено из WebApp: {message.web_app_data.data}")
