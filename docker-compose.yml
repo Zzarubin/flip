@@ -1,0 +1,11 @@
+services:
+  bot:
+    build: .
+    container_name: flipzy-bot
+    env_file:
+      - .env
+    environment:
+      - PYTHONPATH=/app
+    volumes:
+      - .:/app
+    restart: always
