@@ -1,5 +1,90 @@
 <!DOCTYPE html>
-<html>
-<head><title>Flipzy MiniApp</title></head>
-<body><h1>Добро пожаловать в Flipzy MiniApp!</h1></body>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Flipzy — Реферальная система</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f6f6f6;
+      color: #333;
+    }
+    .container {
+      padding: 20px;
+      text-align: center;
+    }
+    .balance {
+      font-size: 24px;
+      margin: 20px 0;
+    }
+    button {
+      padding: 12px 20px;
+      font-size: 16px;
+      margin: 10px;
+      border: none;
+      border-radius: 8px;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+    .nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      background: white;
+      border-top: 1px solid #ccc;
+      padding: 10px 0;
+    }
+    .nav button {
+      background: none;
+      color: #333;
+      font-weight: bold;
+      border: none;
+    }
+    .nav button.active {
+      color: #4CAF50;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="main-screen">
+    <h2>Добро пожаловать в Flipzy!</h2>
+    <div class="balance">💰 Баланс: <span id="balance">0.00 USDT</span></div>
+
+    <button onclick="connectWallet()">🔗 Подключить кошелёк</button>
+    <button onclick="paySubscription()">💳 Оплатить подписку</button>
+  </div>
+
+  <div class="nav">
+    <button class="active" onclick="navigate('main')">🏠 Главная</button>
+    <button onclick="navigate('referrals')">👥 Приглашения</button>
+    <button onclick="navigate('rewards')">🎁 Награды</button>
+    <button onclick="navigate('help')">❓ Помощь</button>
+  </div>
+
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+    tg.ready();
+
+    function connectWallet() {
+      tg.sendData(JSON.stringify({ type: "connect_wallet" }));
+    }
+
+    function paySubscription() {
+      tg.sendData(JSON.stringify({ type: "pay_subscription" }));
+    }
+
+    function navigate(tab) {
+      tg.sendData(JSON.stringify({ type: "navigate", value: tab }));
+      alert(`Переход во вкладку: ${tab}`);
+    }
+  </script>
+</body>
 </html>
+
