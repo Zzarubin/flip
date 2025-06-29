@@ -1,94 +1,32 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
   <title>Flipzy MiniApp</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
       font-family: sans-serif;
       margin: 0;
-      background: #0d1f1e;
+      background: #0f231f;
       color: #fff;
     }
     .screen {
       display: none;
       padding: 20px;
-      text-align: center;
     }
     .screen.active {
       display: block;
     }
+    h2 {
+      text-align: center;
+    }
     .balance {
-      font-size: 24px;
-      margin: 20px 0 10px;
-      font-weight: bold;
-      color: #ffd700;
-    }
-    .box {
-      background-color: #1c2d2c;
-      border-radius: 16px;
-      padding: 16px;
-      margin: 10px auto;
-      max-width: 340px;
-      color: #fff;
-    }
-    .ref-link-container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background-color: #2b413f;
-      border-radius: 12px;
-      padding: 10px;
-      overflow-wrap: break-word;
-    }
-    .copy-btn {
-      background-color: #3a5c59;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      padding: 6px 10px;
-      margin-left: 10px;
-      cursor: pointer;
-    }
-    .level-box {
-      background-color: #1c2d2c;
-      border-radius: 16px;
-      padding: 12px;
-      margin: 8px auto;
-      max-width: 340px;
-      color: #fff;
-    }
-    .tabbar {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      display: flex;
-      justify-content: space-around;
-      background: #132523;
-      border-top: 1px solid #ccc;
-      padding: 10px 0;
-    }
-    .tabbar button {
-      background: none;
-      border: none;
-      font-size: 14px;
-      color: #999;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .tabbar button.active {
-      color: #ffd700;
-      font-weight: bold;
-    }
-    #ton-connect-button {
-      margin: 20px auto;
-      display: flex;
-      justify-content: center;
+      font-size: 20px;
+      margin: 20px 0;
+      text-align: center;
     }
     .button {
       padding: 12px 20px;
@@ -100,120 +38,206 @@
       color: white;
       cursor: pointer;
       display: block;
+      width: fit-content;
     }
-    .help-link {
+    .tabbar {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
       display: flex;
-      align-items: center;
-      background-color: #1c2d2c;
-      margin: 10px auto;
-      border-radius: 16px;
-      padding: 14px;
-      max-width: 340px;
-      font-size: 16px;
-      color: #fff;
-      text-decoration: none;
-      justify-content: flex-start;
+      justify-content: space-around;
+      background: #1c3b34;
+      border-top: 1px solid #333;
+      padding: 10px 0;
     }
-    .help-link img {
-      height: 24px;
-      margin-right: 10px;
+    .tabbar button {
+      background: none;
+      border: none;
+      font-size: 14px;
+      color: #bbb;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .tabbar button.active {
+      color: #4CAF50;
+      font-weight: bold;
+    }
+    .card {
+      background: #244036;
+      border-radius: 12px;
+      padding: 15px;
+      margin: 10px 0;
+    }
+    #ton-connect-button {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+    }
+    #wallet-address {
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 14px;
+      word-break: break-word;
     }
   </style>
 </head>
 <body>
 
-<div id="main" class="screen active">
-  <h2>Добро пожаловать в Flipzy!</h2>
-  <div class="balance">🪙 Баланс: <span id="balance">0.00 USDT</span></div>
-  <div id="ton-connect-button"></div>
-  <p id="wallet-address"></p>
-  <button class="button" onclick="paySubscription()">💳 Оплатить подписку</button>
-</div>
+  <div id="main" class="screen active">
+    <h2>Добро пожаловать в Flipzy!</h2>
+    <div class="balance">🪙 Баланс: <span id="balance">0.00 USDT</span></div>
+    <div id="ton-connect-button"></div>
+    <p id="wallet-address"></p>
+    <button class="button" onclick="paySubscription()">💳 Оплатить подписку</button>
+  </div>
 
-<div id="referrals" class="screen">
-  <div class="box">
-    <div class="balance">$13,900.00</div>
-    <div class="ref-link-container">
-      <span id="referral-link">https://t.me/FlipzyBot?start=</span>
-      <button class="copy-btn" onclick="copyReferralLink()">COPY</button>
+  <div id="referrals" class="screen">
+    <h2>👥 Приглашения</h2>
+    <div class="card">
+      <p style="margin-bottom: 8px;">Твоя реферальная ссылка:</p>
+      <input type="text" id="referral-link" value="—" readonly style="width: 100%; padding: 8px; border-radius: 6px;" onclick="copyReferralLink()" />
+    </div>
+    <div class="card">
+      <p>Приглашённые пользователи:</p>
+      <ul id="invited-list" style="margin: 0; padding-left: 20px;"></ul>
     </div>
   </div>
-  <div class="box">
-    <p style="margin:0; text-align:left;">Your Referral Link</p>
-    <div class="ref-link-container">
-      <span style="font-size: 12px;">https://t.me/FlipzyBot?start=</span>
-      <img src="https://img.icons8.com/ios-filled/24/ffffff/add-user-group-man-man.png"/>
-    </div>
-  </div>
-  <div class="level-box">
-    <p style="margin:0;">Level 1<br><small>Earn $6.00 per referral</small></p>
-  </div>
-  <div class="level-box">
-    <p style="margin:0;">Level 2<br><small>Earn $2.00 per referral</small></p>
-  </div>
-</div>
 
-<div id="rewards" class="screen">
-  <h2>🎁 Награды</h2>
-  <p>Твои достижения и бонусы</p>
-</div>
-
-<div id="help" class="screen">
-  <h2>❓ Помощь</h2>
-  <a class="help-link" href="#"><img src="https://img.icons8.com/ios-filled/50/ffffff/telegram-app.png"/>Telegram Chat</a>
-  <a class="help-link" href="#"><img src="https://img.icons8.com/ios-filled/50/ffffff/telegram-app.png"/>FAQ</a>
-  <a class="help-link" href="#"><img src="https://img.icons8.com/ios-filled/50/ffffff/telegram-app.png"/>Community</a>
-</div>
-
-<div class="tabbar">
-  <button onclick="showScreen('main')" id="tab-main" class="active">🏠<span>Главная</span></button>
-  <button onclick="showScreen('referrals')" id="tab-referrals">👥<span>Приглашения</span></button>
-  <button onclick="showScreen('rewards')" id="tab-rewards">🎁<span>Награды</span></button>
-  <button onclick="showScreen('help')" id="tab-help">❓<span>Помощь</span></button>
-</div>
-
-<script>
-  const tg = window.Telegram.WebApp;
-  tg.expand();
-  tg.ready();
-
-  function paySubscription() {
-    tg.sendData(JSON.stringify({ type: "pay_subscription" }));
-    alert("💳 Имитация оплаты подписки!");
-  }
-
-  function showScreen(id) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-
-    document.querySelectorAll('.tabbar button').forEach(b => b.classList.remove('active'));
-    document.getElementById("tab-" + id).classList.add('active');
-  }
-
-  function copyReferralLink() {
-    const linkText = document.getElementById("referral-link").innerText;
-    navigator.clipboard.writeText(linkText).then(() => {
-      alert("Ссылка скопирована! 📋");
-    });
-  }
-
-  const ton = new TON_CONNECT_UI.TonConnectUI({
-    manifestUrl: 'tonconnect-manifest.json',
-    buttonRootId: 'ton-connect-button'
-  });
-
-  ton.onStatusChange(wallet => {
-    if (wallet?.account?.address) {
-      document.getElementById('wallet-address').innerText = `📎 ${wallet.account.address}`;
-      const refUrl = `https://t.me/flipzy_bot?start=${wallet.account.address}`;
-      document.getElementById('referral-link').innerText = refUrl;
-      Telegram.WebApp.sendData(JSON.stringify({
-        type: 'wallet_connected',
-        address: wallet.account.address
-      }));
+  <div id="rewards" class="screen">
+    
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Flipzy MiniApp - Rewards</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      background: #0e1e18;
+      color: #fff;
+      text-align: center;
     }
-  });
-</script>
+    .screen {
+      padding: 20px;
+    }
+    .rewards-box {
+      background: #1f3b2d;
+      border-radius: 16px;
+      padding: 20px;
+      margin: 40px 20px 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+    .earned-label {
+      font-size: 16px;
+      color: #aaa;
+      margin-bottom: 10px;
+    }
+    .earned-amount {
+      font-size: 32px;
+      font-weight: bold;
+      color: #6fff9c;
+      margin-bottom: 20px;
+    }
+    .withdraw-button {
+      background-color: #1aaf5d;
+      border: none;
+      border-radius: 10px;
+      padding: 15px 30px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .withdraw-button:hover {
+      background-color: #14964f;
+    }
+  </style>
+</head>
+<body>
+  <div class="screen">
+    <div class="rewards-box">
+      <div class="earned-label">Заработано:</div>
+      <div class="earned-amount">$124.00</div>
+      <button class="withdraw-button" onclick="withdraw()">💸 Вывести средства</button>
+    </div>
+  </div>
 
+  <script>
+    function withdraw() {
+      alert("Запрос на вывод отправлен!");
+    }
+  </script>
+</body>
+</html>
+
+  </div>
+
+  <div id="help" class="screen">
+    <h2>❓ Помощь</h2>
+    <div class="card">📢 Telegram Chat</div>
+    <div class="card">📚 FAQ</div>
+    <div class="card">🌐 Community</div>
+  </div>
+
+  <div class="tabbar">
+    <button onclick="showScreen('main')" id="tab-main" class="active">🏠<span>Главная</span></button>
+    <button onclick="showScreen('referrals')" id="tab-referrals">👥<span>Приглашения</span></button>
+    <button onclick="showScreen('rewards')" id="tab-rewards">🎁<span>Награды</span></button>
+    <button onclick="showScreen('help')" id="tab-help">❓<span>Помощь</span></button>
+  </div>
+
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+    tg.ready();
+
+    function paySubscription() {
+      tg.sendData(JSON.stringify({ type: "pay_subscription" }));
+      alert("💳 Имитация оплаты подписки!");
+    }
+
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+
+      document.querySelectorAll('.tabbar button').forEach(b => b.classList.remove('active'));
+      document.getElementById("tab-" + id).classList.add('active');
+    }
+
+    function copyReferralLink() {
+      const link = document.getElementById("referral-link");
+      navigator.clipboard.writeText(link.value).then(() => {
+        alert("Ссылка скопирована! 📋");
+      });
+    }
+
+    const ton = new TON_CONNECT_UI.TonConnectUI({
+      manifestUrl: 'tonconnect-manifest.json',
+      buttonRootId: 'ton-connect-button'
+    });
+
+    ton.onStatusChange(wallet => {
+      if (wallet?.account?.address) {
+        document.getElementById('wallet-address').innerText = `📎 ${wallet.account.address}`;
+        const refUrl = `https://t.me/flipzy_bot?start=${wallet.account.address}`;
+        document.getElementById('referral-link').value = refUrl;
+        const invited = ["@user1", "@user2", "@user3"];
+        const ul = document.getElementById("invited-list");
+        ul.innerHTML = "";
+        invited.forEach(user => {
+          const li = document.createElement("li");
+          li.innerText = user;
+          ul.appendChild(li);
+        });
+        Telegram.WebApp.sendData(JSON.stringify({
+          type: 'wallet_connected',
+          address: wallet.account.address
+        }));
+      }
+    });
+  </script>
 </body>
 </html>
