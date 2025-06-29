@@ -6,11 +6,18 @@
   <title>Flipzy MiniApp</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
+    :root {
+      --bg-color: #1e2b1f;
+      --card-color: #2d3b2e;
+      --text-color: #f1f1f1;
+      --accent-color: #3bb96c;
+    }
+
     body {
       font-family: sans-serif;
       margin: 0;
-      background: #f6f6f6;
-      color: #333;
+      background: var(--bg-color);
+      color: var(--text-color);
     }
     .screen {
       display: none;
@@ -30,12 +37,15 @@
       font-size: 16px;
       border: none;
       border-radius: 8px;
-      background: #4CAF50;
+      background: var(--accent-color);
       color: white;
       cursor: pointer;
       display: block;
     }
     .tabbar {
+      background: var(--card-color);
+      border-top: 1px solid #444;
+
       position: fixed;
       bottom: 0;
       width: 100%;
@@ -46,6 +56,8 @@
       padding: 10px 0;
     }
     .tabbar button {
+      color: var(--text-color);
+
       background: none;
       border: none;
       font-size: 14px;
@@ -55,6 +67,8 @@
       align-items: center;
     }
     .tabbar button.active {
+      color: var(--accent-color);
+
       color: #4CAF50;
       font-weight: bold;
     }
@@ -84,7 +98,7 @@
       margin-top: 5px;
     }
     .copy-btn {
-      background: #4CAF50;
+      background: var(--accent-color);
       border: none;
       padding: 6px 12px;
       color: white;
@@ -99,7 +113,7 @@
   <div id="main" class="screen active">
     <h2>Добро пожаловать в Flipzy!</h2>
     <div class="balance">🪙 Баланс: <span id="balance">0.00 USDT</span></div>
-    <div id="ton-connect-button"></div>
+    <div id="ton-connect-button" style="margin: 20px auto; display: flex; justify-content: center;"></div>
     <p id="wallet-address"></p>
     <button class="button" onclick="paySubscription()">💳 Оплатить подписку</button>
   </div>
