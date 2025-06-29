@@ -115,7 +115,15 @@
       width: 24px;
       margin-right: 10px;
     }
-  </style>
+  
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 80vh;
+    }
+    
 </head>
 <body>
 
@@ -179,7 +187,8 @@
     </div>
   </div>
 
-  <div class="tabbar">
+  </div>
+<div class="tabbar">
     <button onclick="showScreen('main')" id="tab-main" class="active">🏠<span>Главная</span></button>
     <button onclick="showScreen('referrals')" id="tab-referrals">👥<span>Приглашения</span></button>
     <button onclick="showScreen('rewards')" id="tab-rewards">🎁<span>Награды</span></button>
