@@ -127,6 +127,10 @@
       align-items: center;
     }
 
+    .rewards-center {
+      text-align: center;
+    }
+
     @media (max-width: 500px) {
       .button, .withdraw-button {
         width: 90%;
@@ -166,8 +170,8 @@
 
   <div id="rewards" class="screen">
     <h2>🎁 Награды</h2>
-    <div class="card">
-      <h3>Заработано:</h3>
+    <div class="rewards-center">
+      <p>Заработано:</p>
       <p><strong id="earned-amount">$0.00</strong></p>
       <button class="button withdraw-button" onclick="withdraw()">🔄 Вывести средства</button>
     </div>
