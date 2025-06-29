@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+<script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
 <head>
   <meta charset="UTF-8" />
   <title>Flipzy MiniApp</title>
@@ -64,7 +65,8 @@
   <div id="main" class="screen active">
     <h2>Добро пожаловать в Flipzy!</h2>
     <div class="balance">🪙 Баланс: <span id="balance">0.00 USDT</span></div>
-    <button class="button" onclick="connectWallet()">📎 Подключить кошелёк</button>
+    <div id="ton-connect-button"></div>
+    <p id="wallet-address"></p>
     <button class="button" onclick="paySubscription()">💳 Оплатить подписку</button>
   </div>
 
@@ -95,11 +97,6 @@
     tg.expand();
     tg.ready();
 
-    function connectWallet() {
-      tg.sendData(JSON.stringify({ type: "connect_wallet" }));
-      alert("🔗 Имитация подключения кошелька!");
-    }
-
     function paySubscription() {
       tg.sendData(JSON.stringify({ type: "pay_subscription" }));
       alert("💳 Имитация оплаты подписки!");
@@ -112,6 +109,21 @@
       document.querySelectorAll('.tabbar button').forEach(b => b.classList.remove('active'));
       document.getElementById("tab-" + id).classList.add('active');
     }
+
+    const ton = new TON_CONNECT_UI.TonConnectUI({
+      manifestUrl: 'tonconnect-manifest.json',
+      buttonRootId: 'ton-connect-button'
+    });
+
+    ton.onStatusChange(wallet => {
+      if (wallet?.account?.address) {
+        document.getElementById('wallet-address').innerText = `📎 ${wallet.account.address}`;
+        Telegram.WebApp.sendData(JSON.stringify({
+          type: 'wallet_connected',
+          address: wallet.account.address
+        }));
+      }
+    });
   </script>
 </body>
 </html>
