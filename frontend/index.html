@@ -1,36 +1,40 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>Flipzy — Реферальная система</title>
+  <meta charset="UTF-8" />
+  <title>Flipzy MiniApp</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     body {
       font-family: sans-serif;
       margin: 0;
-      padding: 0;
       background: #f6f6f6;
       color: #333;
     }
-    .container {
+    .screen {
+      display: none;
       padding: 20px;
       text-align: center;
     }
+    .screen.active {
+      display: block;
+    }
     .balance {
-      font-size: 24px;
+      font-size: 20px;
       margin: 20px 0;
     }
-    button {
+    .button {
       padding: 12px 20px;
+      margin: 10px auto;
       font-size: 16px;
-      margin: 10px;
       border: none;
       border-radius: 8px;
-      background-color: #4CAF50;
+      background: #4CAF50;
       color: white;
       cursor: pointer;
+      display: block;
     }
-    .nav {
+    .tabbar {
       position: fixed;
       bottom: 0;
       width: 100%;
@@ -40,31 +44,50 @@
       border-top: 1px solid #ccc;
       padding: 10px 0;
     }
-    .nav button {
+    .tabbar button {
       background: none;
-      color: #333;
-      font-weight: bold;
       border: none;
+      font-size: 14px;
+      color: #666;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-    .nav button.active {
+    .tabbar button.active {
       color: #4CAF50;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <div class="container" id="main-screen">
-    <h2>Добро пожаловать в Flipzy!</h2>
-    <div class="balance">💰 Баланс: <span id="balance">0.00 USDT</span></div>
 
-    <button onclick="connectWallet()">🔗 Подключить кошелёк</button>
-    <button onclick="paySubscription()">💳 Оплатить подписку</button>
+  <div id="main" class="screen active">
+    <h2>Добро пожаловать в Flipzy!</h2>
+    <div class="balance">🪙 Баланс: <span id="balance">0.00 USDT</span></div>
+    <button class="button" onclick="connectWallet()">📎 Подключить кошелёк</button>
+    <button class="button" onclick="paySubscription()">💳 Оплатить подписку</button>
   </div>
 
-  <div class="nav">
-    <button class="active" onclick="navigate('main')">🏠 Главная</button>
-    <button onclick="navigate('referrals')">👥 Приглашения</button>
-    <button onclick="navigate('rewards')">🎁 Награды</button>
-    <button onclick="navigate('help')">❓ Помощь</button>
+  <div id="referrals" class="screen">
+    <h2>👥 Приглашения</h2>
+    <p>Приглашай друзей и получай бонусы!</p>
+  </div>
+
+  <div id="rewards" class="screen">
+    <h2>🎁 Награды</h2>
+    <p>Твои достижения и бонусы</p>
+  </div>
+
+  <div id="help" class="screen">
+    <h2>❓ Помощь</h2>
+    <p>Ответы на частые вопросы</p>
+  </div>
+
+  <div class="tabbar">
+    <button onclick="showScreen('main')" id="tab-main" class="active">🏠<span>Главная</span></button>
+    <button onclick="showScreen('referrals')" id="tab-referrals">👥<span>Приглашения</span></button>
+    <button onclick="showScreen('rewards')" id="tab-rewards">🎁<span>Награды</span></button>
+    <button onclick="showScreen('help')" id="tab-help">❓<span>Помощь</span></button>
   </div>
 
   <script>
@@ -74,17 +97,21 @@
 
     function connectWallet() {
       tg.sendData(JSON.stringify({ type: "connect_wallet" }));
+      alert("🔗 Имитация подключения кошелька!");
     }
 
     function paySubscription() {
       tg.sendData(JSON.stringify({ type: "pay_subscription" }));
+      alert("💳 Имитация оплаты подписки!");
     }
 
-    function navigate(tab) {
-      tg.sendData(JSON.stringify({ type: "navigate", value: tab }));
-      alert(`Переход во вкладку: ${tab}`);
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+
+      document.querySelectorAll('.tabbar button').forEach(b => b.classList.remove('active'));
+      document.getElementById("tab-" + id).classList.add('active');
     }
   </script>
 </body>
 </html>
-
