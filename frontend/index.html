@@ -18,6 +18,9 @@
       display: none;
       padding: 20px;
       text-align: center;
+      min-height: 100vh;
+      box-sizing: border-box;
+      padding-bottom: 120px;
     }
 
     .screen.active {
@@ -53,7 +56,7 @@
 
     .balance {
       font-size: 20px;
-      margin: 10px 0;
+      margin: 20px 0;
     }
 
     .button {
@@ -98,7 +101,7 @@
       justify-content: space-between;
       align-items: center;
       font-size: 14px;
-      word-break: break-all;
+      word-break: break-word;
     }
 
     .copy-btn {
@@ -114,6 +117,16 @@
       background-color: #0077cc;
     }
 
+    .main-actions {
+      position: fixed;
+      bottom: 60px;
+      left: 0;
+      right: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
     @media (max-width: 500px) {
       .button, .withdraw-button {
         width: 90%;
@@ -126,8 +139,10 @@
   <div id="main" class="screen active">
     <h2>Добро пожаловать в Flipzy!</h2>
     <div class="balance">🪙 Баланс: <span id="balance">0.00 USDT</span></div>
-    <div id="ton-connect-button"></div>
-    <button class="button" onclick="paySubscription()">💳 Оплатить подписку</button>
+    <div class="main-actions">
+      <div id="ton-connect-button"></div>
+      <button class="button" onclick="paySubscription()">💳 Оплатить подписку</button>
+    </div>
   </div>
 
   <div id="referrals" class="screen">
@@ -180,7 +195,6 @@
     function showScreen(id) {
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       document.getElementById(id).classList.add('active');
-
       document.querySelectorAll('.tabbar button').forEach(b => b.classList.remove('active'));
       document.getElementById("tab-" + id).classList.add('active');
     }
