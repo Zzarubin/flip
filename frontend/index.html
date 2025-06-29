@@ -1,70 +1,137 @@
 <!DOCTYPE html>
 <html lang="ru">
+<script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
 <head>
   <meta charset="UTF-8" />
   <title>Flipzy MiniApp</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
   <style>
     body {
-      margin: 0;
       font-family: sans-serif;
-      background: #0f1e17;
-      color: #fff;
+      margin: 0;
+      background: #1e2e26;
+      color: #f5f5f5;
     }
-
     .screen {
       display: none;
       padding: 20px;
+      text-align: center;
     }
-
     .screen.active {
       display: block;
     }
-
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
+    .balance-card {
+      background: #294634;
+      padding: 20px;
+      border-radius: 12px;
+      margin: 20px 0;
     }
-
-    .centered {
-      text-align: center;
-    }
-
-    .balance {
+    .balance-card .balance {
       font-size: 24px;
-      margin: 15px 0;
+      margin-bottom: 10px;
     }
-
-    .button {
-      display: block;
-      width: 80%;
-      margin: 10px auto;
-      padding: 12px;
-      font-size: 16px;
-      border: none;
+    .copy-container {
+      background: #1e2e26;
+      border: 1px solid #f5f5f5;
       border-radius: 8px;
-      background: #4CAF50;
-      color: white;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       cursor: pointer;
+      color: #f5f5f5;
     }
-
+    .ref-section {
+      background: #294634;
+      padding: 15px;
+      border-radius: 12px;
+      margin: 10px 0;
+    }
     .tabbar {
       position: fixed;
       bottom: 0;
       width: 100%;
       display: flex;
       justify-content: space-around;
-      background: #1d2c23;
-      border-top: 1px solid #333;
+      background: #16271f;
+      border-top: 1px solid #444;
       padding: 10px 0;
     }
-
     .tabbar button {
       background: none;
       border: none;
       font-size: 14px;
-      color: #aaa;
+      color: #ccc;
       display: flex;
-      flex-di
+      flex-direction: column;
+      align-items: center;
+    }
+    .tabbar button.active {
+      color: #00ff9d;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<div id="referrals" class="screen active">
+  <div class="balance-card">
+    <div class="balance">BALANCE</div>
+    <div class="balance">$<span id="balance">13,900.00</span></div>
+    <div class="copy-container" onclick="copyReferralLink()">
+      <span id="referral-link">https://t.me/FlipzyBot?start=</span>
+      <strong>COPY</strong>
+    </div>
+  </div>
+
+  <div class="ref-section">
+    <strong>Your Referral Link</strong>
+    <div class="copy-container" onclick="copyReferralLink()">
+      <span id="referral-link-2">https://t.me/FlipzyBot?start=</span>
+      <span>🔗</span>
+    </div>
+  </div>
+
+  <div class="ref-section">
+    <div>Level 1</div>
+    <div class="copy-container">
+      <span>Earn $6.00 per referral</span>
+      <span>🔗</span>
+    </div>
+  </div>
+
+  <div class="ref-section">
+    <div>Level 2</div>
+    <div class="copy-container">
+      <span>Earn $2.00 per referral</span>
+      <span>🔗</span>
+    </div>
+  </div>
+</div>
+
+<div class="tabbar">
+  <button onclick="showScreen('main')" id="tab-main">🏠<span>Главная</span></button>
+  <button onclick="showScreen('referrals')" id="tab-referrals" class="active">👥<span>Приглашения</span></button>
+  <button onclick="showScreen('rewards')" id="tab-rewards">🎁<span>Награды</span></button>
+  <button onclick="showScreen('help')" id="tab-help">❓<span>Помощь</span></button>
+</div>
+
+<script>
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+
+    document.querySelectorAll('.tabbar button').forEach(b => b.classList.remove('active'));
+    document.getElementById("tab-" + id).classList.add('active');
+  }
+
+  function copyReferralLink() {
+    const text = document.getElementById("referral-link").innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      alert("Ссылка скопирована!");
+    });
+  }
+</script>
+
+</body>
+</html>
